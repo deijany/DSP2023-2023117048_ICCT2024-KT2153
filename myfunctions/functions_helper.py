@@ -3,7 +3,8 @@ import pickle
 from scipy import signal
 import numpy as np
 
-plt.rcParams['text.usetex'] = True
+import shutil
+plt.rcParams['text.usetex'] = shutil.which('latex') is not None
 # import matplotlib
 # matplotlib.use('TkAgg')  # 'Qt5Agg' or 'TkAgg', 'GTK3Agg', etc.
 
