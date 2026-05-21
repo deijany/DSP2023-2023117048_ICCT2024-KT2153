@@ -11,17 +11,10 @@ np.random.seed(1)
 dataset_features = {
     'amount_signals': 100,
     'amount_sinusoids_per_signal': 31,
-    'equidistant_sinusoids_per_signal': True,
     'polynomial_order': 9,
     'number_samples_signal': int(np.power(2, 13)),
     'amount_bits': 8,
     'frequency_dependent_case': False,
-    'initial_frequency': 47e6,
-    'last_frequency': 1576e6,
-    'fs': 3400e6,
-    'bandwidth_percent_on_dataset': 40,
-    'initial_frequency_gap': 20,
-    'generator_method': 'polynomial_model'
 }
 dataset_version = 1
 storage_dataset = False  # set True to regenerate dataset from scratch

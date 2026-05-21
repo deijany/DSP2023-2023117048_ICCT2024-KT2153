@@ -6,17 +6,10 @@ class PolynomialSignalGenerator:
         self.dataset_features = dataset_features
         self.amount_signals = dataset_features['amount_signals']
         self.amount_sinusoids_per_signal = dataset_features['amount_sinusoids_per_signal']
-        self.equidistant_sinusoids_per_signal = dataset_features['equidistant_sinusoids_per_signal']
         self.polynomial_order = dataset_features['polynomial_order']
         self.number_samples_signal = dataset_features['number_samples_signal']
         self.amount_bits = dataset_features['amount_bits']
         self.frequency_dependent_case = dataset_features['frequency_dependent_case']
-        self.initial_frequency = dataset_features['initial_frequency']
-        self.last_frequency = dataset_features['last_frequency']
-        self.fs = dataset_features['fs']
-        self.bandwidth_percent_on_dataset = dataset_features['bandwidth_percent_on_dataset']
-        self.generator_method = dataset_features['generator_method']
-        self.init_freq_gap = dataset_features['initial_frequency_gap']
         np.random.seed(seed_value)
 
     @staticmethod
@@ -46,17 +39,6 @@ class PolynomialSignalGenerator:
             a_coef = np.array([1, -1, 1]) * 2 * np.array([1/100, 2/100, 0.01 * term_index / (1 + self.polynomial_order)])
         return a_coef
 
-    def _generate_frequency_grid(self):
-        if self.generator_method == 'polynomial_model':
-            freq_resolution = self.fs / self.number_samples_signal
-            freq_grid = np.arange(self.initial_frequency, self.last_frequency + freq_resolution, freq_resolution)
-            half_frequency_band = int(0.01 * self.bandwidth_percent_on_dataset * len(freq_grid))
-            center_point = int(0.5 * len(freq_grid))
-            centered_freq_grid = freq_grid[center_point - half_frequency_band : center_point + half_frequency_band]
-            return centered_freq_grid
-        else:
-            raise ValueError('Invalid generator method')
-
     def generate_multisine(self):
         """Generates a dataset of multisine signals."""
         amount_carriers = 31
@@ -71,9 +53,6 @@ class PolynomialSignalGenerator:
         amplitude_array = np.zeros((self.amount_signals, len(subcarrier_frequencies)))
 
         for i in range(self.amount_signals):
-            selected_freqs = np.random.choice(subcarrier_frequencies, self.amount_sinusoids_per_signal, replace=False)
-            num_elements = 12
-            indices = np.random.choice(selected_freqs.shape[0], size=num_elements, replace=False)
             for j, frequency in enumerate(freq_grid):
                 amplitude = 1
                 phase = np.random.choice([1, 3, 5, 7], replace=True) * np.pi / 4

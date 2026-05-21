@@ -1,13 +1,12 @@
+import sys, shutil
 import matplotlib.pyplot as plt
+
+_in_colab = 'google.colab' in sys.modules
 import pickle
 from scipy import signal
 import numpy as np
 
-import sys, shutil
-_in_colab = 'google.colab' in sys.modules
 plt.rcParams['text.usetex'] = (not _in_colab) and (shutil.which('latex') is not None)
-# import matplotlib
-# matplotlib.use('TkAgg')  # 'Qt5Agg' or 'TkAgg', 'GTK3Agg', etc.
 
 def store_dictionary(base_filename, dictionary):
     """
@@ -104,6 +103,7 @@ class SpectrumAnalyzer:
 
         if save_fig:
             plt.savefig(str(save_path) + '.pdf', bbox_inches='tight', pad_inches=0.05, transparent=True)
+        plt.show()
         return
 def print_snr_summary(X_train, V_train, X_hat_train, SNR_array_X_train, SNR_array_V_train, SNR_array_X_hat_train,
                       X_test, V_test, X_hat_test, SNR_array_X_test, SNR_array_V_test, SNR_array_X_hat_test,
