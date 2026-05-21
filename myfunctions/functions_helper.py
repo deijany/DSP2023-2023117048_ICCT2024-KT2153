@@ -3,8 +3,9 @@ import pickle
 from scipy import signal
 import numpy as np
 
-import shutil
-plt.rcParams['text.usetex'] = shutil.which('latex') is not None
+import sys, shutil
+_in_colab = 'google.colab' in sys.modules
+plt.rcParams['text.usetex'] = (not _in_colab) and (shutil.which('latex') is not None)
 # import matplotlib
 # matplotlib.use('TkAgg')  # 'Qt5Agg' or 'TkAgg', 'GTK3Agg', etc.
 
@@ -73,7 +74,7 @@ class SpectrumAnalyzer:
         for ii, X in enumerate(XM):
             axs[ii].set_ylabel(r'Amplitude spectrum (dB)', fontsize=8)
             axs[ii].set_xlabel(r'Normalized frequency', fontsize=8)
-            axs[ii].set_title(r'\textbf{{{}}}'.format(title[ii]), fontsize=8)
+            axs[ii].set_title(title[ii], fontsize=8)
             N = 16
             SNR_lim = 6.02 * N + 1.76
             axs[ii].set_ylim((-SNR_lim - 15, 0.5))
@@ -102,8 +103,7 @@ class SpectrumAnalyzer:
 
 
         if save_fig:
-            disk_path = str(save_path)
-        plt.savefig(disk_path + '.pdf', bbox_inches='tight', pad_inches=0.05, transparent=True)
+            plt.savefig(str(save_path) + '.pdf', bbox_inches='tight', pad_inches=0.05, transparent=True)
         return
 def print_snr_summary(X_train, V_train, X_hat_train, SNR_array_X_train, SNR_array_V_train, SNR_array_X_hat_train,
                       X_test, V_test, X_hat_test, SNR_array_X_test, SNR_array_V_test, SNR_array_X_hat_test,
